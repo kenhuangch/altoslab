@@ -61,7 +61,6 @@ export const Hero = () => {
             {cursorOnAltos && cursorVisible && (
               <span className="text-cyan-400">|</span>
             )}
-            <br className="md:hidden" />
             {labStr && (
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
                 {labStr}
