@@ -63,22 +63,22 @@ export const Contact = () => {
                         <MessageSquare size={20} className="text-cyan-400" />
                         傳送訊息
                     </h3>
-                    <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
+                    <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex flex-col gap-2">
                                 <label htmlFor="contact-name" className="text-sm text-gray-400 ml-1">姓名</label>
                                 <input id="contact-name" type="text" required className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20 transition-all" placeholder="John Doe" />
                             </div>
-                            <div className="space-y-2">
+                            <div className="flex flex-col gap-2">
                                 <label htmlFor="contact-phone" className="text-sm text-gray-400 ml-1">聯絡電話</label>
                                 <input id="contact-phone" type="tel" className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20 transition-all" placeholder="0912 345 678" />
                             </div>
                         </div>
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="contact-email" className="text-sm text-gray-400 ml-1">電子郵件</label>
                             <input id="contact-email" type="email" required className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20 transition-all" placeholder="john@example.com" />
                         </div>
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="contact-type" className="text-sm text-gray-400 ml-1">專案類型</label>
                             <select id="contact-type" className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20 transition-all text-gray-400">
                                 <option value="">請選擇專案類型</option>
@@ -88,7 +88,7 @@ export const Contact = () => {
                                 <option value="other">其他合作諮詢</option>
                             </select>
                         </div>
-                        <div className="space-y-2">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="contact-message" className="text-sm text-gray-400 ml-1">訊息內容</label>
                             <textarea id="contact-message" rows={4} required className="w-full bg-neutral-900 border border-neutral-800 rounded-lg px-4 py-3 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/20 transition-all resize-none" placeholder="請簡單描述您的需求..."></textarea>
                         </div>
