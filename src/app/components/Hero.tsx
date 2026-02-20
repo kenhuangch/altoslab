@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
+const TITLE = "ALTOSLAB";
+const SPLIT = 5; // ALTOS | LAB
+
 export const Hero = () => {
+  const [count, setCount] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(true);
+
+  useEffect(() => {
+    if (count < TITLE.length) {
+      const t = setTimeout(() => setCount((c) => c + 1), 110);
+      return () => clearTimeout(t);
+    }
+    let blinks = 0;
+    const interval = setInterval(() => {
+      setCursorVisible((v) => !v);
+      if (++blinks >= 6) {
+        clearInterval(interval);
+        setCursorVisible(false);
+      }
+    }, 400);
+    return () => clearInterval(interval);
+  }, [count]);
+
+  const altosStr = TITLE.slice(0, Math.min(count, SPLIT));
+  const labStr = count > SPLIT ? TITLE.slice(SPLIT, count) : "";
+  const cursorOnAltos = count <= SPLIT;
+
   return (
     <section
       id="hero"
@@ -30,11 +56,20 @@ export const Hero = () => {
           <h2 className="text-cyan-400 font-medium tracking-[0.2em] mb-4 uppercase text-sm md:text-base">
             Future Digital Experience
           </h2>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight leading-tight">
-            ALTOS <br className="md:hidden" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
-              LAB
-            </span>
+          <h1 className="text-7xl md:text-7xl lg:text-8xl font-black text-white mb-6 tracking-tight leading-tight">
+            {altosStr}
+            {cursorOnAltos && cursorVisible && (
+              <span className="text-cyan-400">|</span>
+            )}
+            <br className="md:hidden" />
+            {labStr && (
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
+                {labStr}
+              </span>
+            )}
+            {!cursorOnAltos && cursorVisible && (
+              <span className="text-purple-400">|</span>
+            )}
           </h1>
           <p className="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-10 leading-relaxed">
             我們打造極致的數位體驗。結合創意設計與尖端技術，為您的品牌創造獨一無二的網路存在感。
