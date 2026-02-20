@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { ArrowLeft, Tag, Calendar, User, Briefcase } from "lucide-react";
+import { ArrowLeft, ArrowRight, Tag, Calendar, User, Briefcase } from "lucide-react";
 import { projects } from "../../data/projects";
 
 export const ProjectDetail = () => {
@@ -33,6 +33,16 @@ export const ProjectDetail = () => {
   const currentIndex = projects.findIndex((p) => p.id === project.id);
   const prevProject = projects[currentIndex - 1] ?? null;
   const nextProject = projects[currentIndex + 1] ?? null;
+
+  const relatedProjects = useMemo(() => {
+    const others = projects.filter((p) => p.id !== project.id);
+    const shuffled = [...others];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 3);
+  }, [project.id]);
 
   return (
     <motion.div
@@ -133,13 +143,6 @@ export const ProjectDetail = () => {
                 <InfoRow icon={<User size={16} />} label="角色" value={project.role} />
               </div>
 
-              <Link
-                to="/#projects"
-                className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-full border border-neutral-700 text-gray-400 text-sm font-bold uppercase tracking-widest hover:border-cyan-500 hover:text-cyan-400 transition-all duration-300"
-              >
-                <ArrowLeft size={16} />
-                回到作品集
-              </Link>
             </motion.aside>
           </div>
 
@@ -186,6 +189,64 @@ export const ProjectDetail = () => {
               )}
             </motion.div>
           )}
+
+          {/* Related projects */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            className="mt-24 pt-12 border-t border-neutral-800"
+          >
+            <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-10">
+              其他作品
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProjects.map((p) => (
+                <Link
+                  key={p.id}
+                  to={`/projects/${p.id}`}
+                  className="group relative overflow-hidden rounded-2xl bg-neutral-900 aspect-[4/3] cursor-pointer border border-neutral-800 block"
+                >
+                  <div className="w-full h-full overflow-hidden">
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-300" />
+                  <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                      <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-2 inline-block">
+                        {p.categoryLabel}
+                      </span>
+                      <h3 className="text-xl font-bold text-white leading-tight">
+                        {p.title}
+                      </h3>
+                      <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-[grid-template-rows] duration-300">
+                        <div className="overflow-hidden">
+                          <div className="flex items-center gap-2 text-white text-sm font-bold mt-3 border-b border-cyan-400 inline-flex pb-1">
+                            查看專案 <ArrowRight size={14} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-12 flex justify-center">
+              <Link
+                to="/#projects"
+                className="flex items-center gap-2 px-8 py-4 rounded-full border border-neutral-700 text-gray-400 text-sm font-bold uppercase tracking-widest hover:border-cyan-500 hover:text-cyan-400 transition-all duration-300"
+              >
+                <ArrowLeft size={16} />
+                回到作品集
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
