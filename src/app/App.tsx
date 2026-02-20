@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { About } from "./components/About";
@@ -6,7 +6,15 @@ import { Projects } from "./components/Projects";
 import { Contact } from "./components/Contact";
 import { CustomCursor } from "./components/CustomCursor";
 import { ProjectDetail } from "./pages/ProjectDetail";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 // 作品獨立頁面元件 (之後可以移出到獨立檔案)
 const ProjectsPage = () => {
@@ -35,6 +43,7 @@ const HomePage = () => (
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="min-h-screen bg-black text-white font-sans selection:bg-cyan-400 selection:text-black">
         <CustomCursor />
         <Navbar />

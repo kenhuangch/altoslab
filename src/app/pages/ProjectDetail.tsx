@@ -47,7 +47,7 @@ export const ProjectDetail = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
 
         {/* Back button */}
-        <div className="absolute top-8 left-6 z-10">
+        <div className="absolute top-20 md:top-8 left-6 z-10">
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-all duration-300"
