@@ -5,9 +5,9 @@ import { About } from "./components/About";
 import { Projects } from "./components/Projects";
 import { Contact } from "./components/Contact";
 import { CustomCursor } from "./components/CustomCursor";
-import { ProjectDetail } from "./pages/ProjectDetail";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
+// Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -16,22 +16,14 @@ const ScrollToTop = () => {
   return null;
 };
 
-// 作品獨立頁面元件 (之後可以移出到獨立檔案)
-const ProjectsPage = () => {
-  return (
-    <div className="pt-24 min-h-screen bg-black">
-      <div className="container mx-auto px-6 py-12">
-        <h1 className="text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">
-          所有作品項目
-        </h1>
-        <p className="text-gray-400 text-xl mb-12">這裡展示了 Altos Lab 歷年來的所有技術結晶。</p>
-        <Projects />
-      </div>
-    </div>
-  );
-};
+// Placeholder for Detail Page (to be refined by Gemini Pro)
+const ProjectDetail = () => (
+  <div className="pt-32 min-h-screen bg-black text-center">
+    <h1 className="text-4xl font-bold text-white">專案詳情頁面 (建設中)</h1>
+    <a href="/" className="text-cyan-400 mt-8 inline-block hover:underline">返回首頁</a>
+  </div>
+);
 
-// 首頁元件
 const HomePage = () => (
   <>
     <Hero />
@@ -50,8 +42,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/project/:id" element={<ProjectDetail />} />
           </Routes>
         </main>
         <Contact />
