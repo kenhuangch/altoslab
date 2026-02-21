@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { ArrowLeft, ArrowRight, Tag, Calendar, User, Briefcase } from "lucide-react";
 import { projects } from "../../data/projects";
 
 export const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const project = projects.find((p) => p.id === Number(id));
 
   // Lock body overflow so fixed bg doesn't cause extra scroll artifacts
@@ -67,14 +66,14 @@ export const ProjectDetail = () => {
       {/* ── Hero spacer ── transparent, shows fixed image behind */}
       <div className="relative z-10 h-[88vh] flex flex-col justify-between px-6 pt-0 pb-14 container mx-auto">
         {/* Back button */}
-        <div className="pt-20 md:pt-8">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-all duration-300"
+        <div className="pt-20 md:pt-24">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-sm text-gray-300 hover:text-white hover:border-white/30 transition-all duration-300"
           >
             <ArrowLeft size={16} />
-            返回
-          </button>
+            返回首頁
+          </Link>
         </div>
 
         {/* Title */}
