@@ -1,40 +1,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ExternalLink, ArrowRight, Layers, Smartphone, Globe, Box, LayoutGrid } from "lucide-react";
+import { ArrowRight, Smartphone, Globe, Box, LayoutGrid } from "lucide-react";
 import { Link } from "react-router-dom";
+import { projects } from "../../data/projects";
 
 const categories = [
   { id: "all", label: "全部專案", icon: <LayoutGrid size={16} /> },
   { id: "web", label: "網頁設計", icon: <Globe size={16} /> },
   { id: "app", label: "行動應用", icon: <Smartphone size={16} /> },
   { id: "3d", label: "3D 體驗", icon: <Box size={16} /> },
-];
-
-const projects = [
-  {
-    id: "neon-finance",
-    title: "Neon Finance",
-    category: "app",
-    categoryLabel: "Mobile App",
-    image: "https://images.unsplash.com/photo-1605600659802-1353d7fd3732?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "新一代金融管理應用，融合霓虹風格與直觀操作，讓理財變得更有趣。",
-  },
-  {
-    id: "vortex-dashboard",
-    title: "Vortex Dashboard",
-    category: "web",
-    categoryLabel: "Web App",
-    image: "https://images.unsplash.com/photo-1575388902449-6bca946ad549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "為大型企業打造的數據可視化儀表板，即時監控關鍵指標與預測分析。",
-  },
-  {
-    id: "ethereal-gallery",
-    title: "Ethereal Gallery",
-    category: "3d",
-    categoryLabel: "Immersive Web",
-    image: "https://images.unsplash.com/photo-1636545948913-c238e8a1b4bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    description: "線上沉浸式藝術展覽平台，結合 WebGL 技術，提供身歷其境的觀展體驗。",
-  }
 ];
 
 export const Projects = () => {
@@ -85,7 +59,7 @@ export const Projects = () => {
                 key={project.id}
                 className="group relative overflow-hidden rounded-2xl bg-neutral-900 aspect-[4/3] cursor-pointer border border-neutral-800"
               >
-                <Link to={`/project/${project.id}`} className="block w-full h-full">
+                <Link to={`/projects/${project.id}`} className="block w-full h-full">
                   <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80" />
                   <div className="absolute inset-0 p-8 flex flex-col justify-end">
