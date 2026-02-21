@@ -5,9 +5,9 @@ import { About } from "./components/About";
 import { Projects } from "./components/Projects";
 import { Contact } from "./components/Contact";
 import { CustomCursor } from "./components/CustomCursor";
+import { ProjectDetail } from "./pages/ProjectDetail";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
-// Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -15,14 +15,6 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
-
-// Placeholder for Detail Page (to be refined by Gemini Pro)
-const ProjectDetail = () => (
-  <div className="pt-32 min-h-screen bg-black text-center">
-    <h1 className="text-4xl font-bold text-white">專案詳情頁面 (建設中)</h1>
-    <a href="/" className="text-cyan-400 mt-8 inline-block hover:underline">返回首頁</a>
-  </div>
-);
 
 const HomePage = () => (
   <>
@@ -42,7 +34,7 @@ export default function App() {
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/project/:id" element={<ProjectDetail />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
           </Routes>
         </main>
         <Contact />
