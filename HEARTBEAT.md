@@ -3,5 +3,3 @@
 # Keep this file empty (or with only comments) to skip heartbeat API calls.
 
 # Add tasks below when you want the agent to check something periodically.
-
-- [ ] 每天早上 07:00 執行「蝦妹靈魂每日備份」：將 `shrimp-soul-backup/` 內容同步到 GitHub。 (已設定 Cron Job 自動執行)
