@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "skills": {
+    "apple-notes": {
+      "version": "1.0.0",
+      "installedAt": 1771692592379
+    },
+    "notion": {
+      "version": "1.0.0",
+      "installedAt": 1771692594311
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1771692596333
+    },
+    "summarize": {
+      "version": "1.0.0",
+      "installedAt": 1771692598059
+    },
+    "openclaw-backup": {
+      "version": "1.0.0",
+      "installedAt": 1771692606920
+    },
+    "social-media-agent": {
+      "version": "1.0.0",
+      "installedAt": 1771692617321
+    }
+  }
+}
