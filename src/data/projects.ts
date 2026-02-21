@@ -1,5 +1,21 @@
 export type ProjectCategory = "all" | "web" | "app" | "3d";
 
+export type ContentBlockType =
+  | "text"         // 純文字段落（可含標題）
+  | "image"        // 全寬圖片
+  | "text-image"   // 左文右圖
+  | "image-text"   // 左圖右文
+  | "full-image";  // 超大全幅圖（無文字）
+
+export interface ContentBlock {
+  type: ContentBlockType;
+  heading?: string;
+  text?: string;
+  image?: string;
+  imageAlt?: string;
+  caption?: string;
+}
+
 export interface Project {
   id: number;
   title: string;
@@ -8,6 +24,8 @@ export interface Project {
   image: string;
   description: string;
   longDescription: string;
+  content?: ContentBlock[];
+  youtubeId?: string;
   tags: string[];
   year: string;
   client: string;
@@ -25,6 +43,39 @@ export const projects: Project[] = [
     description: "新一代金融管理應用，融合霓虹風格與直觀操作，讓理財變得更有趣。",
     longDescription:
       "Neon Finance 是一款突破傳統的金融管理應用程式，我們以使用者行為研究為核心，重新設計了個人理財的互動體驗。霓虹色彩系統不僅帶來視覺衝擊，更透過顏色編碼直觀呈現資產狀態。儀表板採用即時數據更新，讓用戶能隨時掌握財務動態。應用整合了 AI 預測模型，主動分析消費模式並提供個人化建議，幫助用戶建立更健康的財務習慣。",
+    content: [
+      {
+        type: "text",
+        heading: "挑戰與目標",
+        text: "傳統金融 App 介面複雜、資訊過載，導致用戶放棄主動理財。我們的目標是打造一款讓人「願意每天打開」的金融工具——視覺上令人愉悅，功能上真正有用。",
+      },
+      {
+        type: "text-image",
+        heading: "設計語言",
+        text: "我們從賽博龐克美學汲取靈感，建立了一套以霓虹青、電光紫為主色的色彩系統。每種顏色都有其語義：青色代表成長、紫色代表支出、紅色代表警示。色彩編碼讓用戶在不讀數字的情況下，也能迅速判斷財務狀況。",
+        image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+        imageAlt: "Neon Finance 色彩系統",
+      },
+      {
+        type: "image-text",
+        heading: "AI 預測儀表板",
+        text: "整合自研 AI 模型，分析用戶過去 90 天的消費模式，主動預測下個月的超支風險，並在適當時機推送精準建議。預測準確率在 Beta 測試中達到 87%，用戶平均每月節省開支 12%。",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+        imageAlt: "AI 儀表板介面",
+      },
+      {
+        type: "full-image",
+        image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+        imageAlt: "Neon Finance 完整介面展示",
+        caption: "完整的儀表板介面，整合收支、預算與投資三大模組",
+      },
+      {
+        type: "text",
+        heading: "成果",
+        text: "上線 6 個月內，應用獲得 App Store 4.9 顆星評分，月活躍用戶突破 5 萬。用戶留存率（Day-30）達 68%，遠高於金融類 App 的行業平均 21%。",
+      },
+    ],
+    youtubeId: "dQw4w9WgXcQ",
     tags: ["React Native", "TypeScript", "Figma", "AI Integration", "Finance API"],
     year: "2024",
     client: "FinTech Startup",

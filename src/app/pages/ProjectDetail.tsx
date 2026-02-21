@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { ArrowLeft, ArrowRight, Tag, Calendar, User, Briefcase } from "lucide-react";
-import { projects } from "../../data/projects";
+import { ArrowLeft, ArrowRight, Tag, Calendar, User, Briefcase, Youtube } from "lucide-react";
+import { projects, type ContentBlock } from "../../data/projects";
 
 export const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const project = projects.find((p) => p.id === Number(id));
 
-  // Lock body overflow so fixed bg doesn't cause extra scroll artifacts
   useEffect(() => {
     return () => {
       document.body.style.overflow = "";
@@ -50,7 +49,7 @@ export const ProjectDetail = () => {
       exit={{ opacity: 0 }}
       className="relative text-white"
     >
-      {/* ── Fixed background image ── stays pinned while content scrolls over it */}
+      {/* ── Fixed background image ── */}
       <div className="fixed inset-0 z-0">
         <motion.img
           initial={{ scale: 1.05 }}
@@ -63,9 +62,8 @@ export const ProjectDetail = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       </div>
 
-      {/* ── Hero spacer ── transparent, shows fixed image behind */}
+      {/* ── Hero spacer ── */}
       <div className="relative z-10 h-[88vh] flex flex-col justify-between px-6 pt-0 pb-14 container mx-auto">
-        {/* Back button */}
         <div className="pt-20 md:pt-24">
           <Link
             to="/"
@@ -76,7 +74,6 @@ export const ProjectDetail = () => {
           </Link>
         </div>
 
-        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,7 +88,7 @@ export const ProjectDetail = () => {
         </motion.div>
       </div>
 
-      {/* ── Content panel ── slides up over the fixed image */}
+      {/* ── Content panel ── */}
       <div className="relative z-10 bg-black rounded-t-[2.5rem] -mt-6">
         <div className="container mx-auto px-6 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
@@ -102,14 +99,23 @@ export const ProjectDetail = () => {
               transition={{ delay: 0.35, duration: 0.6 }}
               className="lg:col-span-2 space-y-10"
             >
-              <div>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-4">
-                  關於此專案
-                </h2>
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  {project.longDescription}
-                </p>
-              </div>
+              {/* 如果有 content blocks 就渲染，否則 fallback 到 longDescription */}
+              {project.content && project.content.length > 0 ? (
+                <div className="space-y-16">
+                  {project.content.map((block, i) => (
+                    <ContentBlockRenderer key={i} block={block} index={i} />
+                  ))}
+                </div>
+              ) : (
+                <div>
+                  <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-4">
+                    關於此專案
+                  </h2>
+                  <p className="text-gray-300 text-lg leading-relaxed">
+                    {project.longDescription}
+                  </p>
+                </div>
+              )}
 
               {/* Tags */}
               <div>
@@ -141,9 +147,31 @@ export const ProjectDetail = () => {
                 <InfoRow icon={<Briefcase size={16} />} label="客戶" value={project.client} />
                 <InfoRow icon={<User size={16} />} label="角色" value={project.role} />
               </div>
-
             </motion.aside>
           </div>
+
+          {/* ── YouTube 影片區塊 ── */}
+          {project.youtubeId && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="mt-24 pt-16 border-t border-neutral-800"
+            >
+              <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-8 flex items-center gap-2">
+                <Youtube size={14} /> 專案影片
+              </h2>
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900">
+                <iframe
+                  src={`https://www.youtube.com/embed/${project.youtubeId}`}
+                  title={`${project.title} - 專案影片`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                />
+              </div>
+            </motion.div>
+          )}
 
           {/* Prev / Next navigation */}
           {(prevProject || nextProject) && (
@@ -252,6 +280,145 @@ export const ProjectDetail = () => {
   );
 };
 
+// ── ContentBlock 渲染器 ──
+const ContentBlockRenderer = ({ block, index }: { block: ContentBlock; index: number }) => {
+  const delay = 0.35 + index * 0.08;
+
+  switch (block.type) {
+    case "text":
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay, duration: 0.5 }}
+        >
+          {block.heading && (
+            <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-4">
+              {block.heading}
+            </h2>
+          )}
+          {block.text && (
+            <p className="text-gray-300 text-lg leading-relaxed">{block.text}</p>
+          )}
+        </motion.div>
+      );
+
+    case "image":
+      return (
+        <motion.figure
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay, duration: 0.5 }}
+          className="space-y-3"
+        >
+          <div className="w-full rounded-2xl overflow-hidden border border-neutral-800">
+            <img
+              src={block.image}
+              alt={block.imageAlt ?? ""}
+              className="w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          {block.caption && (
+            <figcaption className="text-sm text-gray-500 text-center">
+              {block.caption}
+            </figcaption>
+          )}
+        </motion.figure>
+      );
+
+    case "full-image":
+      return (
+        <motion.figure
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay, duration: 0.6 }}
+          className="space-y-3 -mx-6 md:-mx-12"
+        >
+          <div className="w-full overflow-hidden">
+            <img
+              src={block.image}
+              alt={block.imageAlt ?? ""}
+              className="w-full object-cover max-h-[70vh]"
+              loading="lazy"
+            />
+          </div>
+          {block.caption && (
+            <figcaption className="text-sm text-gray-500 text-center px-6">
+              {block.caption}
+            </figcaption>
+          )}
+        </motion.figure>
+      );
+
+    case "text-image":
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay, duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+        >
+          <div className="space-y-4">
+            {block.heading && (
+              <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                {block.heading}
+              </h2>
+            )}
+            {block.text && (
+              <p className="text-gray-300 text-lg leading-relaxed">{block.text}</p>
+            )}
+          </div>
+          {block.image && (
+            <div className="rounded-2xl overflow-hidden border border-neutral-800">
+              <img
+                src={block.image}
+                alt={block.imageAlt ?? ""}
+                className="w-full object-cover aspect-[4/3]"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </motion.div>
+      );
+
+    case "image-text":
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay, duration: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+        >
+          {block.image && (
+            <div className="rounded-2xl overflow-hidden border border-neutral-800">
+              <img
+                src={block.image}
+                alt={block.imageAlt ?? ""}
+                className="w-full object-cover aspect-[4/3]"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div className="space-y-4">
+            {block.heading && (
+              <h2 className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+                {block.heading}
+              </h2>
+            )}
+            {block.text && (
+              <p className="text-gray-300 text-lg leading-relaxed">{block.text}</p>
+            )}
+          </div>
+        </motion.div>
+      );
+
+    default:
+      return null;
+  }
+};
+
+// ── InfoRow ──
 const InfoRow = ({
   icon,
   label,
